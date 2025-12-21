@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -11,3 +12,13 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+
+
+// Member Management
+Route::get('/members', [UserController::class, 'index']);
+Route::post('/members', [UserController::class, 'store']);
+Route::put('/members/{id}', [UserController::class, 'update']);
+Route::delete('/members/{id}', [UserController::class, 'destroy']);
+
+// Dashboard Stats
+Route::get('/dashboard-stats', [UserController::class, 'getDashboardStats']);

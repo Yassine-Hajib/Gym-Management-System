@@ -9,73 +9,82 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    
+    /**
+     * Get only Members for the GestionMember page
+     */
     public function index()
     {
-        $users = User::where('role', '!=', 'owner')->get(); 
-        return view('admin.users.index', compact('users'));
+        // Fetch only users who are members
+        $members = User::where('role', 'member')->get(); 
+        return response()->json($members);
     }
 
-    public function create()
+    /**
+     * Stats for the Owner Dashboard cards
+     */
+    public function getDashboardStats()
     {
-        // Nécessaire pour l'assignation d'un coach à un membre
-        $coaches = User::where('role', 'coach')->get();
-        return view('admin.users.create', compact('coaches'));
+        return response()->json([
+         'memberCount' => User::where('role', 'member')->count(),
+         'coachCount'  => User::where('role', 'coach')->count(),
+         'totalRevenue' => 120000, 
+         'totalExpenses' => 45000, 
+]);
     }
 
-    
     public function store(Request $request)
-    {
-        $request->validate([     
-            'name' => 'required|string|max:255', 
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'role' => 'required|in:member,coach',
-            'coach_id' => 'nullable|exists:users,id',
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'required',
+        'dob'   => 'required|date|before:today', // 1. Ensures it's a real date and not in the future
+    ]);
+
+    try {
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make('member123'),
+            'role'     => 'member',
+            'phone'    => $request->phone,
+            'dob'      => $request->dob,
         ]);
 
-        User::create([  
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'coach_id' => $request->coach_id,
-        ]);
-
-        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
+        return response()->json($user, 201);
+        
+    } catch (\Exception $e) {
+        // 2. This catches the SQL error and returns a clean message instead of a crash
+        return response()->json(['message' => 'Invalid data format provided.'], 500);
     }
-
-   
-    public function show(User $user) {
-        // Charger les relations (paiements, membres coachés, progression)
-        $user->load(['payments', 'members', 'progressEntries']); 
-        return view('admin.users.show', compact('user'));
-    }
-
-    public function edit(User $user) {
-        $coaches = User::where('role', 'coach')->get();
-        return view('admin.users.edit', compact('user', 'coaches'));
-    }
+}
 
   
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:member,coach',
-            'coach_id' => 'nullable|exists:users,id',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'phone' => 'nullable|string',
+            'dob' => 'nullable|date',
         ]);
         
-        $user->update($request->except('password'));
+        $user->update($request->only(['name', 'email', 'phone', 'dob']));
 
-        return redirect()->route('users.show', $user)->with('success', 'Informations mises à jour.');
+        return response()->json([
+            'message' => 'Member updated successfully',
+            'user' => $user
+        ]);
     }
 
    
-    public function destroy(User $user)
+    public function destroy($id)
     {
+        $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé.');
+        
+        return response()->json(['message' => 'Member deleted successfully']);
     }
 }
