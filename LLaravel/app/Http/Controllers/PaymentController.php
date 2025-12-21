@@ -33,22 +33,26 @@ class PaymentController extends Controller
     }
 
     
-    public function store(Request $request) 
+    
+    public function store(Request $request)
     {
         $request->validate([
-
-            'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:membership_fee,coach_salary',
-            'amount' => 'required|numeric|min:0.01',
+            'description'  => 'required|string',
+            'amount'       => 'required|numeric',
             'payment_date' => 'required|date',
-            'description' => 'nullable|string|max:255',
-
         ]);
 
-        Payment::create($request->all());
+        $payment = Payment::create([
+            'description'  => $request->description,
+            'amount'       => $request->amount,
+            'payment_date' => $request->payment_date,
+            'status'       => 'paid',
+            'user_id'      => 1, // OK for now, but better to use Auth later
+        ]);
 
-        return redirect()->route('payments.index')->with('success','Transaction enregistrée.');
+        return response()->json($payment, 201);
     }
+
 
     public function show(Payment $payment)
     {
