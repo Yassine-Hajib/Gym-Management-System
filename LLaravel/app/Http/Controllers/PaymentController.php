@@ -33,26 +33,26 @@ class PaymentController extends Controller
     }
 
     
+        public function store(Request $request)
+{
+    $request->validate([
+        'description'  => 'required|string',
+        'amount'       => 'required|numeric',
+        'payment_date' => 'required|date',
+    ]);
+
+    $payment = Payment::create([
+        'description'  => $request->description,
+        'amount'       => $request->amount,
+        'payment_date' => $request->payment_date,
+        'status'       => 'paid',
+        'user_id'      => 1
+    ]);
+
+    return response()->json($payment, 201);
+}
+
     
-    public function store(Request $request)
-    {
-        $request->validate([
-            'description'  => 'required|string',
-            'amount'       => 'required|numeric',
-            'payment_date' => 'required|date',
-        ]);
-
-        $payment = Payment::create([
-            'description'  => $request->description,
-            'amount'       => $request->amount,
-            'payment_date' => $request->payment_date,
-            'status'       => 'paid',
-            'user_id'      => 1, // OK for now, but better to use Auth later
-        ]);
-
-        return response()->json($payment, 201);
-    }
-
 
     public function show(Payment $payment)
     {

@@ -37,8 +37,8 @@ class User extends Authenticatable
         return $this->hasMany(Annonce::class, 'user_id');
     }
     
-    public function expenses()
+    public function Expenses()
     {
-        return $this->hasMany(expenses::class, 'user_id');
+        return $this->hasMany(Expenses::class, 'user_id');
     }
 }

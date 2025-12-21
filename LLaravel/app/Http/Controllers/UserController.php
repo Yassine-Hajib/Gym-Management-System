@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
+use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,18 +21,28 @@ class UserController extends Controller
         return response()->json($members);
     }
 
-    /**
-     * Stats for the Owner Dashboard cards
-     */
-    public function getDashboardStats()
-    {
-        return response()->json([
-         'memberCount' => User::where('role', 'member')->count(),
-         'coachCount'  => User::where('role', 'coach')->count(),
-         'totalRevenue' => 120000, 
-         'totalExpenses' => 45000, 
-]);
-    }
+
+public function getDashboardStats()
+{
+    // Sum from Payments table (Member payments = Revenue)
+    $totalRevenue = \App\Models\Payment::sum('amount') ?: 0;
+    
+    // Sum from Expenses table (General expenses + Coach salaries = Expenses)
+    $totalExpenses = \App\Models\Expense::sum('amount') ?: 0;
+
+    $profit = $totalRevenue - $totalExpenses;
+
+    return response()->json([
+        'totalRevenue'  => (float) $totalRevenue,
+        'totalExpenses' => (float) $totalExpenses,
+        'profit'        => (float) $profit,
+        'memberCount'   => \App\Models\User::where('role', 'member')->count(),
+        'coachCount'    => \App\Models\User::where('role', 'coach')->count(),
+        'paidThisMonth' => \App\Models\Payment::whereMonth('payment_date', now()->month)->count(),
+    ]);
+}
+
+
 
     public function store(Request $request)
 {
