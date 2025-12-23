@@ -91,8 +91,38 @@ public function getDashboardStats()
         ]);
     }
 
+
+
+
+    public function getCoaches()
+{
+    $coaches = User::where('role', 'coach')->get();
+    return response()->json($coaches);
+}
+
+/**
+ * Store a new Coach
+ */
+public function storeCoach(Request $request)
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'required',
+    ]);
+
+    $user = User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'password' => Hash::make('coach123'), // Default password
+        'role'     => 'coach',
+        'phone'    =>            $request->phone,
+    ]);
+
+    return response()->json($user, 201);
+}
    
-    public function destroy($id)
+public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
