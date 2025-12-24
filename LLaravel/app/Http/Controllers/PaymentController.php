@@ -33,23 +33,31 @@ class PaymentController extends Controller
     }
 
     
-        public function store(Request $request)
+public function store(Request $request)
 {
-    $request->validate([
-        'description'  => 'required|string',
+    // 1. On valide tous les champs envoyés par React
+    $validated = $request->validate([
+        'user_id'      => 'required|exists:users,id',
         'amount'       => 'required|numeric',
-        'payment_date' => 'required|date',
+        'status'       => 'required|string',
+        'payment_date' => 'nullable|date', // Optionnel, sinon on utilise la date du jour
+        'description'  => 'nullable|string'
     ]);
 
+    // 2. On crée le paiement avec les données validées
     $payment = Payment::create([
-        'description'  => $request->description,
-        'amount'       => $request->amount,
-        'payment_date' => $request->payment_date,
-        'status'       => 'paid',
-        'user_id'      => 1
+        'user_id'      => $validated['user_id'],
+        'amount'       => $validated['amount'],
+        'status'       => $validated['status'],
+        'payment_date' => $validated['payment_date'] ?? now(), // Date actuelle si vide
+        'description'  => $validated['description'] ?? 'Membership Payment',
     ]);
 
-    return response()->json($payment, 201);
+    // 3. On retourne une réponse JSON claire
+    return response()->json([
+        'message' => 'Paiement enregistré avec succès',
+        'payment' => $payment
+    ], 201);
 }
 
     
@@ -93,4 +101,7 @@ class PaymentController extends Controller
 
         return redirect()->route('payments.index')->with('success', 'La transaction a été supprimée.');
     }
+
+    
+
 }

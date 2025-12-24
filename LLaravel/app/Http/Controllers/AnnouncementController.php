@@ -25,38 +25,31 @@ class AnnouncementController extends Controller
     /**
      * Enregistrer une nouvelle annonce
      */
-    public function store(Request $request)
+public function store(Request $request)
     {
         try {
-            // 1. Validation des données
             $validatedData = $request->validate([
-                'title'       => 'required|string|max:255',
+                'title'       => 'required|string',
                 'description' => 'required|string',
-                'target'      => 'required|string', // 'Member', 'Coach', ou 'All'
-                'user_id'     => 'nullable|integer' 
+                'target'      => 'required|string',
+                'user_id'     => 'nullable' 
             ]);
 
-            // 2. Création de l'annonce
-            // Si user_id n'est pas fourni, on peut mettre 1 par défaut (ID de l'admin)
+            // This line fails if the Model name is wrong
             $announcement = Announcement::create([
                 'title'       => $validatedData['title'],
                 'description' => $validatedData['description'],
                 'target'      => $validatedData['target'],
-                'user_id'     => $validatedData['user_id'] ?? 1, 
+                'user_id'     => $request->user_id ?? 1, 
             ]);
 
-            return response()->json([
-                'message' => 'Annonce créée avec succès',
-                'data' => $announcement
-            ], 201);
+            return response()->json($announcement, 201);
 
         } catch (Exception $e) {
-            // Log de l'erreur pour le développeur (storage/logs/laravel.log)
-            Log::error("Erreur Store Announcement: " . $e->getMessage());
-
+            // This will now tell us the REAL error in the browser console
             return response()->json([
-                'error' => 'Échec de la création',
-                'details' => $e->getMessage()
+                'error' => 'Server Error',
+                'message' => $e->getMessage()
             ], 500);
         }
     }

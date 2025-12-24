@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\ProgressionController;
+
 
 
 
@@ -46,3 +48,13 @@ Route::get('/announcements', [AnnouncementController::class, 'index']);
 Route::post('/announcements', [AnnouncementController::class, 'store']);
 Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
 Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
+
+Route::get('/progressions/{userId}', [ProgressionController::class, 'index']);
+Route::post('/progressions', [ProgressionController::class, 'store']);
+
+Route::get('/progressions/{userId}', [ProgressionController::class, 'index']);
+Route::post('/progressions', [ProgressionController::class, 'store']);
+
+Route::get('/payments/{userId}', [PaymentController::class, 'getUserPayments']);
+Route::post('/payments', [PaymentController::class, 'store']);
+
