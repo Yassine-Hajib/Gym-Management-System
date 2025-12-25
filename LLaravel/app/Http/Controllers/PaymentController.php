@@ -35,31 +35,24 @@ class PaymentController extends Controller
     
 public function store(Request $request)
 {
-    // 1. On valide tous les champs envoyés par React
     $validated = $request->validate([
         'user_id'      => 'required|exists:users,id',
         'amount'       => 'required|numeric',
         'status'       => 'required|string',
-        'payment_date' => 'nullable|date', // Optionnel, sinon on utilise la date du jour
-        'description'  => 'nullable|string'
+        'payment_date' => 'required|date',
+        'description'  => 'nullable|string',
     ]);
 
-    // 2. On crée le paiement avec les données validées
     $payment = Payment::create([
         'user_id'      => $validated['user_id'],
         'amount'       => $validated['amount'],
         'status'       => $validated['status'],
-        'payment_date' => $validated['payment_date'] ?? now(), // Date actuelle si vide
-        'description'  => $validated['description'] ?? 'Membership Payment',
+        'payment_date' => $validated['payment_date'],
+        'description'  => $validated['description'] ?? 'Paiement Mensuel',
     ]);
 
-    // 3. On retourne une réponse JSON claire
-    return response()->json([
-        'message' => 'Paiement enregistré avec succès',
-        'payment' => $payment
-    ], 201);
+    return response()->json($payment, 201);
 }
-
     
 
     public function show(Payment $payment)
