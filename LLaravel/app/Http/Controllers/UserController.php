@@ -11,28 +11,24 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Get only Members for the GestionMember page
-     */
+
     public function index()
     {
-        // Fetch only users who are members
         $members = User::where('role', 'member')->get(); 
         return response()->json($members);
     }
 
 
-public function getDashboardStats()
+
+
+public function getDashboardStats()  
 {
-    // Sum from Payments table (Member payments = Revenue)
-    $totalRevenue = \App\Models\Payment::sum('amount') ?: 0;
-    
-    // Sum from Expenses table (General expenses + Coach salaries = Expenses)
+    $totalRevenue = \App\Models\Payment::sum('amount') ?: 0; 
     $totalExpenses = \App\Models\Expense::sum('amount') ?: 0;
 
     $profit = $totalRevenue - $totalExpenses;
 
-    return response()->json([
+    return response()->json([ 
         'totalRevenue'  => (float) $totalRevenue,
         'totalExpenses' => (float) $totalExpenses,
         'profit'        => (float) $profit,
@@ -44,17 +40,19 @@ public function getDashboardStats()
 
 
 
+
+
     public function store(Request $request)
 {
-    $request->validate([
+    $request->validate([ 
         'name'  => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'phone' => 'required',
-        'dob'   => 'required|date|before:today', // 1. Ensures it's a real date and not in the future
-    ]);
+        'dob'   => 'required|date|before:today', 
+        ]);
 
     try {
-        $user = User::create([
+        $user = User::create([ 
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => $request->password ? Hash::make($request->password) : Hash::make('gym9'),
@@ -63,18 +61,17 @@ public function getDashboardStats()
             'dob'      => $request->dob,
         ]);
 
-        return response()->json($user, 201);
-        
-    } catch (\Exception $e) {
-        // 2. This catches the SQL error and returns a clean message instead of a crash
+        return response()->json($user, 201); 
+
+    } catch (\Exception $e) { 
         return response()->json(['message' => 'Invalid data format provided.'], 500);
     }
-}
+ }
 
   
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id); // Trouver l'utilisateur par ID
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -83,7 +80,7 @@ public function getDashboardStats()
             'dob' => 'nullable|date',
         ]);
         
-        $user->update($request->only(['name', 'email', 'phone', 'dob']));
+        $user->update($request->only(['name', 'email', 'phone', 'dob'])); 
 
         return response()->json([
             'message' => 'Member updated successfully',
@@ -93,16 +90,12 @@ public function getDashboardStats()
 
 
 
-
-    public function getCoaches()
+    public function getCoaches() 
 {
-    $coaches = User::where('role', 'coach')->get();
-    return response()->json($coaches);
+    $coaches = User::where('role', 'coach')->get(); 
+    return response()->json($coaches); 
 }
 
-/**
- * Store a new Coach
- */
 public function storeCoach(Request $request)
 {
     $request->validate([
@@ -111,12 +104,12 @@ public function storeCoach(Request $request)
         'phone' => 'required',
     ]);
 
-    $user = User::create([
+    $user = User::create([  //creation d'un coach
         'name'     => $request->name,
         'email'    => $request->email,
-        'password' => Hash::make('coach123'), // Default password
+        'password' => Hash::make('coach123'), 
         'role'     => 'coach',
-        'phone'    =>            $request->phone,
+        'phone'    => $request->phone,
     ]);
 
     return response()->json($user, 201);
@@ -124,7 +117,7 @@ public function storeCoach(Request $request)
    
 public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id); 
         $user->delete();
         
         return response()->json(['message' => 'Member deleted successfully']);

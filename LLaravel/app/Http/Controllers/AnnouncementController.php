@@ -1,17 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Models\Announcement; // Assurez-vous que ce modèle existe
+use App\Models\Announcement; 
 use Illuminate\Support\Facades\Log;
-use Exception;
+use Exception; //a class
 
 class AnnouncementController extends Controller
 {
-    /**
-     * Afficher la liste des annonces
-     */
+
     public function index()
     {
         try {
@@ -22,9 +18,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    /**
-     * Enregistrer une nouvelle annonce
-     */
+ 
 public function store(Request $request)
     {
         try {
@@ -35,7 +29,6 @@ public function store(Request $request)
                 'user_id'     => 'nullable' 
             ]);
 
-            // This line fails if the Model name is wrong
             $announcement = Announcement::create([
                 'title'       => $validatedData['title'],
                 'description' => $validatedData['description'],
@@ -46,7 +39,6 @@ public function store(Request $request)
             return response()->json($announcement, 201);
 
         } catch (Exception $e) {
-            // This will now tell us the REAL error in the browser console
             return response()->json([
                 'error' => 'Server Error',
                 'message' => $e->getMessage()
@@ -54,9 +46,7 @@ public function store(Request $request)
         }
     }
 
-    /**
-     * Modifier une annonce existante
-     */
+
     public function update(Request $request, $id)
     {
         try {
@@ -80,9 +70,7 @@ public function store(Request $request)
         }
     }
 
-    /**
-     * Supprimer une annonce
-     */
+
     public function destroy($id)
     {
         try {

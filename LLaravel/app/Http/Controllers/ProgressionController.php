@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProgressionController extends Controller
 {
-    // Récupérer l'historique d'un membre
+   
     public function index($userId)
     {
         return response()->json(
@@ -14,7 +14,7 @@ class ProgressionController extends Controller
         );
     }
 
-    // Enregistrer une nouvelle progression (Poids + Image)
+  
     public function store(Request $request)
     {
         $request->validate([
@@ -26,7 +26,6 @@ class ProgressionController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            // Sauvegarde l'image dans storage/app/public/progressions
             $imagePath = $request->file('image')->store('progressions', 'public');
         }
 

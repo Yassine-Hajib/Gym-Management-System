@@ -6,10 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-// In Laravel 11, the base Controller might not exist by default 
-// or is located in a different spot. Let's fix the inheritance:
 
-class AuthController // Remove "extends Controller" for a quick test
+
+class AuthController 
 {
     public function signup(Request $request) {
         $request->validate([
@@ -36,11 +35,10 @@ class AuthController // Remove "extends Controller" for a quick test
         'password' => 'required',
     ]);
 
-    // This uses Laravel's built-in Auth which checks hashed passwords automatically
-    if (\Illuminate\Support\Facades\Auth::attempt($request->only('email', 'password'))) {
+    if (\Illuminate\Support\Facades\Auth::attempt($request->only('email', 'password'))){ 
         $user = \Illuminate\Support\Facades\Auth::user();
         $token = $user->createToken('token')->plainTextToken;
-
+        
         return response()->json([
             'user' => $user,
             'token' => $token

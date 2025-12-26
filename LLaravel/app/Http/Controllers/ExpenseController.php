@@ -9,12 +9,12 @@ class ExpenseController extends Controller
     public function index()
     {
         $expenses = Expense::orderBy('expense_date', 'desc')->get();
- 
-        return view('admin.finance.expenses.index', compact('expenses'));
+        return view('admin.finance.expenses.index', compact('expenses')); 
     }
+
     public function create()
     {
-        return view('admin.finance.expenses.create'); 
+        return view('admin.finance.expenses.create'); // Formulaire de création de dépense
     }
     
     
@@ -26,12 +26,12 @@ class ExpenseController extends Controller
         'expense_date' => 'required|date',
     ]);
 
-    // Nous forçons l'ID 1 (votre compte admin)
-    $expense = Expense::create([
+    
+    $expense = Expense::create([ 
         'description'  => $request->description,
         'amount'       => $request->amount,
         'expense_date' => $request->expense_date,
-        'user_id'      => 1 // Assurez-vous que l'utilisateur ID 1 existe dans 'users'
+        'user_id'      => 1 
     ]);
 
     return response()->json($expense, 201);

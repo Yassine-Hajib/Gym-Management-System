@@ -6,16 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+  
     public function up(): void
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
+            $table->morphs('tokenable');    // Définit la relation polymorphe (coach, member ..)
             $table->text('name');
-            $table->string('token', 64)->unique();
+            $table->string('token', 64)->unique(); // le code secret du badge Qui permet l'authentification
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable()->index();
@@ -23,9 +21,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('personal_access_tokens');
