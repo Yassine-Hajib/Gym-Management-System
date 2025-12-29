@@ -39,6 +39,7 @@ Route::post('/progressions', [ProgressionController::class, 'store']);
 
 Route::put('/members/{id}', [UserController::class, 'update']);
 Route::delete('/members/{id}', [UserController::class, 'destroy']);
+Route::get('/coaches', [UserController::class, 'getCoaches']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
