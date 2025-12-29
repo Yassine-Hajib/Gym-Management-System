@@ -6,12 +6,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ProgressionController;
+
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::get('/users', [UserController::class, 'index']); 
 
 
@@ -33,15 +32,13 @@ Route::get('/users-coaches', [UserController::class, 'getCoaches']);
 Route::post('/users-coaches', [UserController::class, 'storeCoach']);
 
 
-Route::get('/announcements', [AnnouncementController::class, 'index']);
-Route::post('/announcements', [AnnouncementController::class, 'store']);
-Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
-Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
-
+Route::middleware('auth:sanctum')->get('/dashboard-stats', [UserController::class, 'getDashboardStats']);
 
 Route::get('/progressions/{userId}', [ProgressionController::class, 'index']);
 Route::post('/progressions', [ProgressionController::class, 'store']);
 
+Route::put('/members/{id}', [UserController::class, 'update']);
+Route::delete('/members/{id}', [UserController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

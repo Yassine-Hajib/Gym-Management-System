@@ -44,31 +44,25 @@ public function getDashboardStats()
 
     public function store(Request $request)
 {
-    $request->validate([ 
+    $request->validate([
         'name'  => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'phone' => 'required',
-        'dob'   => 'required|date|before:today', 
-        ]);
+        'dob'   => 'required|date|before:today',
+    ]);
 
-    try {
-        $user = User::create([ 
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : Hash::make('gym9'),
-            'role'     => 'member',
-            'phone'    => $request->phone,
-            'dob'      => $request->dob,
-        ]);
+    $user = User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'phone'    => $request->phone,
+        'dob'      => $request->dob,
+        'role'     => 'member',              // ✅ OBLIGATOIRE
+        'password' => Hash::make('gym9'),    // ✅ OBLIGATOIRE
+    ]);
 
-        return response()->json($user, 201); 
+    return response()->json($user, 201);
+}
 
-    } catch (\Exception $e) { 
-        return response()->json(['message' => 'Invalid data format provided.'], 500);
-    }
- }
-
-  
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id); // Trouver l'utilisateur par ID

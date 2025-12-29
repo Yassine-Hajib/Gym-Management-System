@@ -13,7 +13,6 @@ class ProgressionController extends Controller
             Progression::where('user_id', $userId)->orderBy('date', 'desc')->get()
         );
     }
-
   
     public function store(Request $request)
     {

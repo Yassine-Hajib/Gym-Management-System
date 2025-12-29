@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('coach_id')->references('id')->on('users')->onDelete('set null');
             $table->rememberToken();
             $table->timestamps();
+            $table->date('dob')->nullable(); 
         });
     }
 
