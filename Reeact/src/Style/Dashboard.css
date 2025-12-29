@@ -1,0 +1,149 @@
+/* src/Style/Dashboard.css (REFINED PROFESSIONAL LOOK) */
+
+/* --- Variables for Consistency (Slightly adjusted sizes) --- */
+:root {
+    --primary-color: #ffc107;      /* Bright Yellow/Gold - Accent */
+    --secondary-color: #17a2b8;    /* Cyan/Teal - Secondary Accent/Info */
+    --background-dark: #1f2128;    /* Main Background: Dark Slate/Blue-Gray */
+    --card-background: #2a2d35;    /* Card Background: Darker Blue-Gray */
+    --text-light: #f0f0f0;         /* Light Text */
+    --text-muted: #a0a0a0;         /* Muted Text */
+    --success-color: #28a745;      /* Green for Revenue/Success */
+    --danger-color: #dc3545;       /* Red for Expenses/Danger */
+    --font-family: 'Montserrat', sans-serif;
+}
+
+/* Base Body Style */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    font-family: var(--font-family);
+    margin: 0;
+}
+
+/* --- Top Bar (Header) --- */
+.topbar {
+    background-color: var(--card-background);
+    padding: 10px 20px; /* Reduced padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
+}
+
+.topbar h2 {
+    font-size: 1.5rem; /* Reduced font size */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.menu-btn {
+    font-size: 1.5rem; /* Reduced icon size */
+    color: var(--text-light);
+}
+
+.topbar select {
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 4px;
+    font-size: 0.85rem; /* Reduced font size */
+    background-color: #333;
+    color: var(--text-light);
+}
+
+
+/* --- Main Content --- */
+.dashboard-content {
+    padding: 20px; /* Reduced padding */
+    flex-grow: 1;
+}
+
+/* --- Metrics Cards Layout (Tighter and Smaller) --- */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Min card size reduced */
+    gap: 20px; /* Reduced gap */
+    margin-top: 20px; /* Reduced margin */
+}
+
+.card {
+    background: var(--card-background);
+    padding: 20px; /* Significantly reduced padding */
+    border-radius: 8px; /* Slightly smaller radius */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    border: 1px solid #333;
+}
+
+.card:hover {
+    transform: translateY(-3px); /* Subtle lift on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    border-color: var(--primary-color); 
+}
+
+.card h3 {
+    font-size: 0.9rem; /* Smaller heading font */
+    color: var(--text-muted);
+    margin-bottom: 8px; /* Reduced margin */
+    font-weight: 500;
+}
+
+.card p {
+    font-size: 1.8rem; /* Significantly reduced data font size */
+    font-weight: 800;
+    color: var(--text-light);
+}
+
+/* --- Financial Metric Coloring --- */
+.revenue-card p { color: #4CAF50; }
+.expenses-card p { color: #f44336; }
+.profit-card p { 
+    color: var(--primary-color);
+    font-size: 2.2rem; /* Slightly larger than other data, but reduced overall */
+}
+
+
+
+
+
+
+
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 220px; /* SLIGHTLY NARROWER */
+    background-color: var(--card-background);
+    height: 100vh;
+    position: fixed;
+    top: 55px; /* ADJUSTED: To fit the smaller topbar height for consistency */
+    left: -220px; /* ADJUSTED: Match the new width */
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 15px 0; /* SLIGHTLY REDUCED PADDING */
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.5); /* SLIGHTLY SOFTER SHADOW */
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 20px; 
+    text-decoration: none;
+    color: var(--text-muted); 
+    font-size: 0.95rem; 
+    font-weight: 600;
+    border-left: 4px solid transparent;
+    transition: background-color 0.2s, border-left 0.2s, color 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #585555; 
+    border-left-color: var(--primary-color); /* MATCHY: Uses the bright accent color */
+    color: var(--primary-color); /* MATCHY: Highlights the text with the accent color */
+}

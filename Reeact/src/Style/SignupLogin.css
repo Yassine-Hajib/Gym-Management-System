@@ -1,0 +1,127 @@
+/* src/Style/SignupLogin.css (PROFESSIONAL DARK THEME) */
+
+/* --- Global Variables (Matching Dashboard/Home) --- */
+:root {
+    --primary-color: #ff8c00;      /* Bright Orange - Accent */
+    --secondary-color: #008080;    /* Deep Teal - Secondary Accent */
+    --background-dark: #161a1d;    /* Main Background: Very Dark Charcoal */
+    --card-background: #24292e;    /* Form Box Background: Darker Slate */
+    --text-light: #e0e0e0;         /* Light Text */
+    --text-muted: #a0a0a0;         /* Muted Text */
+    --danger-color: #dc3545;       /* Red for Errors */
+}
+
+/* --- Container and Centering --- */
+.form-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-dark); /* Dark background */
+    padding: 10px;
+}
+
+/* --- Form Box Structure (Dark & Professional) --- */
+.form-box {
+    background: var(--card-background); /* Dark card background */
+    padding: 30px; 
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7); /* Stronger shadow for depth */
+    width: 100%;
+    max-width: 380px; 
+    text-align: center;
+    border: 1px solid #33363e; /* Subtle dark border */
+}
+
+.form-title {
+    margin-bottom: 20px; 
+    color: var(--primary-color); /* Orange accent title */
+    font-size: 1.5rem; 
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* --- Form Layout and Inputs --- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; 
+}
+
+.input-group {
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 4px; 
+    font-weight: 500;
+    color: var(--text-light); /* Light label text */
+    font-size: 0.85rem; 
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 12px; 
+    border: 1px solid #444; /* Darker border */
+    border-radius: 5px; 
+    box-sizing: border-box; 
+    font-size: 0.9rem; 
+    background-color: #333; /* Dark input fill */
+    color: var(--text-light);
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color); /* Orange focus glow */
+    box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3); 
+    outline: none;
+}
+
+/* --- Buttons --- */
+.submit-btn {
+    background-color: var(--secondary-color); /* Deep Teal submit button */
+    color: white;
+    padding: 10px 15px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem; 
+    font-weight: 600;
+    margin-top: 15px; 
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #009999; /* Slightly lighter teal on hover */
+}
+
+/* --- Toggle and Navigation Links --- */
+.toggle-text, .role-change-text {
+    margin-top: 15px;
+    font-size: 0.8rem; 
+    color: var(--text-muted); /* Muted text */
+}
+
+.toggle-link {
+    color: var(--primary-color); /* Orange link */
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.toggle-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Error Messages --- */
+.error-message {
+    color: var(--danger-color); /* Red text */
+    background-color: #3a2225; /* Dark subtle error background */
+    border: 1px solid var(--danger-color);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    text-align: left;
+}

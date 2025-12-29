@@ -1,0 +1,102 @@
+/* src/Style/Gestion.css (Updated Table/Form Styles) */
+
+/* General Card Styles (Reused from Dashboard.css but added specific names) */
+.add-form-container, .search-modify-container, .member-list-container {
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* --- Input and Form Styles --- */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #333;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+/* Input layout for 'Add Member' section */
+.add-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+.add-form .action-btn {
+    grid-column: 1 / -1; /* Button spans full width */
+}
+
+/* Search Area Layout */
+.search-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.search-area .form-input {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+/* Found Member Details */
+.found-member-detail h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.found-member-detail .form-input {
+    width: 50%; /* Make inputs half width in the modify section */
+    display: inline-block;
+    margin-right: 10px;
+}
+.action-group {
+    margin-top: 10px;
+}
+
+/* --- Member List Styles --- */
+.member-item {
+    padding: 12px;
+    background: #333;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border-left: 5px solid var(--secondary-color); /* Highlight with blue accent */
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.member-item b {
+    color: var(--primary-color);
+}
+
+
+/* --- Button Styles (Reusable) --- */
+.action-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+.primary-btn { background-color: #b58930; color: white; }
+.primary-btn:hover { background-color: #3d5843; }
+
+.success-btn { background-color: #9e830b; color: white; }
+.success-btn:hover { background-color: #375f40; }
+
+.warning-btn { background-color: #ffc107; color: #333; }
+.warning-btn:hover { background-color: #e0a800; }
+
+.danger-btn { background-color: #dc3545; color: white; }
+.danger-btn:hover { background-color: #bd2130; }    
+
