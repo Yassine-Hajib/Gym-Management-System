@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 class ProgressionController extends Controller
 {
    
-    public function index($userId)
+    public function index($userId) 
     {
         return response()->json(
             Progression::where('user_id', $userId)->orderBy('date', 'desc')->get()
@@ -23,7 +23,7 @@ class ProgressionController extends Controller
             'image'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Max 2MB
         ]);
 
-        $imagePath = null;
+        $imagePath = null; 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('progressions', 'public');
         }

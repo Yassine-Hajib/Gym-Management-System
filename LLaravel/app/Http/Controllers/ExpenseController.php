@@ -1,68 +1,70 @@
 <?php
+
 namespace App\Http\Controllers;
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
     
     public function index()
     {
-        $expenses = Expense::orderBy('expense_date', 'desc')->get();
-        return view('admin.finance.expenses.index', compact('expenses')); 
+        
+        $expenses = Expense::orderBy('expense_date', 'desc')->get();    
+        return response()->json($expenses);
     }
 
-    public function create()
+
+    public function store(Request $request)
     {
-        return view('admin.finance.expenses.create'); // Formulaire de création de dépense
+        $validated = $request->validate([
+            'description'  => 'required|string|max:255',
+            'amount'       => 'required|numeric|min:0.01',
+            'expense_date' => 'required|date',
+        ]);
+
+        $expense = Expense::create([ 
+            'description'  => $validated['description'],
+            'amount'       => $validated['amount'],
+            'expense_date' => $validated['expense_date'],
+            'user_id'      => Auth::id() ?? 1 
+        ]);
+
+        return response()->json([
+            'message' => 'Dépense enregistrée avec succès',
+            'expense' => $expense
+        ], 201);
     }
-    
-    
-  public function store(Request $request)
-{
-    $request->validate([
-        'description'  => 'required|string',
-        'amount'       => 'required|numeric',
-        'expense_date' => 'required|date',
-    ]);
 
     
-    $expense = Expense::create([ 
-        'description'  => $request->description,
-        'amount'       => $request->amount,
-        'expense_date' => $request->expense_date,
-        'user_id'      => 1 
-    ]);
-
-    return response()->json($expense, 201);
-}
-
-
-    public function show(Expense $expense)
+    public function show(Expense $expense) 
     {
-        return view('admin.finance.expenses.show', compact('expense'));
+        return response()->json($expense);
     }
 
-    public function edit(Expense $expense)
-    {
-        return view('admin.finance.expenses.edit', compact('expense'));
-    }
-
+    
     public function update(Request $request, Expense $expense)
     {
-        $request->validate([
-            'description' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0.01',
+        $validated = $request->validate([
+            'description'  => 'required|string|max:255',
+            'amount'       => 'required|numeric|min:0.01',
             'expense_date' => 'required|date',
-           
         ]);
         
-        $expense->update($request->all());
-        return redirect()->route('expenses.index')->with('success', 'Dépense mise à jour.');
+        $expense->update($validated);
+
+        return response()->json([
+            'message' => 'Dépense mise à jour avec succès',
+            'expense' => $expense
+        ], 200);
     }
+
+    
     public function destroy(Expense $expense)
     {
         $expense->delete();
-        return redirect()->route('expenses.index')->with('success', 'Dépense supprimée.');
+
+        return response()->json(['message' => 'Dépense supprimée avec succès'], 200);
     }
 }

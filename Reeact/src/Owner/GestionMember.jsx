@@ -34,12 +34,12 @@ const handleAdd = async () => {
         const token = localStorage.getItem("token"); // Récupération du jeton
         
         await axios.post("http://127.0.0.1:8000/api/members", newMember, {
-            headers: { Authorization: `Bearer ${token}` } // <--- ENVOI DU JETON
+            headers: { Authorization: `Bearer ${token}` } // autorisation d'accès
         });
 
         alert("Membre ajouté !");
         setNewMember({ name: "", dob: "", phone: "", email: "" });
-        fetchMembers(); // Actualise la liste
+        fetchMembers(); 
     } catch (err) {
         alert("Erreur : " + (err.response?.data?.message || "Vérifiez vos champs"));
     }

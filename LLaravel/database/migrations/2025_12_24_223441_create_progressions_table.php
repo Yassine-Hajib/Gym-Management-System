@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('progressions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');//
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->float('weight');
             $table->date('date');
             $table->string('image_path')->nullable(); // Pour stocker le chemin de l'image

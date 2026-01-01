@@ -11,17 +11,16 @@ return new class extends Migration
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');    // Définit la relation polymorphe (coach, member ..)
+            $table->morphs('tokenable');     // Définit l'utilisateur Connecter
             $table->text('name');
-            $table->string('token', 64)->unique(); // le code secret du badge Qui permet l'authentification
+            $table->string('token', 64)->unique();  //Le code geenerer quand L'utilisateur se connecte
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable()->index();
             $table->timestamps();
         });
     }
-
-  
+        
     public function down(): void
     {
         Schema::dropIfExists('personal_access_tokens');

@@ -5,7 +5,7 @@ import "../Style/Dashboard.css";
 import "../Style/Gestion.css"; 
 import "../Style/CoachGestion.css"; 
 
-function GestionCoach() {
+function GestionCoach() { 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [coaches, setCoaches] = useState([]);
     const [form, setForm] = useState({ id: "", name: "", email: "", phone: "" });

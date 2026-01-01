@@ -5,8 +5,8 @@ import "../Style/Finance.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-const GestionFinance = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+const GestionFinance = () => { 
+    const [sidebarOpen, setSidebarOpen] = useState(false); 
     const [finance, setFinance] = useState({ revenue: 0, expenses: 0, profit: 0 });
     const [members, setMembers] = useState([]); 
     const [coaches, setCoaches] = useState([]);
@@ -23,7 +23,7 @@ const GestionFinance = () => {
     const [coachSalary, setCoachSalary] = useState("");
     const [salaryDate, setSalaryDate] = useState("");
 
-    useEffect(() => {
+    useEffect(() => { // Chargement du composant
         fetchFinanceSummary();
         fetchMembers();
         fetchCoaches();
@@ -31,9 +31,9 @@ const GestionFinance = () => {
 
     const fetchFinanceSummary = async () => { 
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); // Récupère le token de l'owner connecté
             const res = await axios.get(`${API_BASE_URL}/api/dashboard-stats`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` } 
             });
             setFinance({
                 revenue: res.data.totalRevenue || 0, 
@@ -88,6 +88,7 @@ const fetchCoaches = async () => {
             fetchFinanceSummary();
         } catch (err) { alert("Error recording expense"); }
     };
+
 
     const handleMemberPayment = async () => {
         if (!selectedMemberId || !memberPay || !payDate) return alert("Select member/fill fields");

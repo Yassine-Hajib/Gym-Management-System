@@ -45,7 +45,7 @@ const OwnerDashboard = () => {
         const newProfit = metrics.revenue - metrics.expenses;
         
         setMetrics(prevMetrics => ({
-            ...prevMetrics,
+            ...prevMetrics, // keep other metrics unchanged
             profit: newProfit
         }));
 

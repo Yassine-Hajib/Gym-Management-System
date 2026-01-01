@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -13,7 +12,7 @@ class AuthController
     public function signup(Request $request) {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users', 
             'password' => 'required|min:3',
             'role' => 'required'
         ]);
@@ -36,18 +35,15 @@ class AuthController
     ]);
 
     if (\Illuminate\Support\Facades\Auth::attempt($request->only('email', 'password'))){ 
-        $user = \Illuminate\Support\Facades\Auth::user();
+        $user = \Illuminate\Support\Facades\Auth::user();    // Geet All User Inforamtions 
         $token = $user->createToken('token')->plainTextToken;
         
         return response()->json([
-            'user' => $user,
+            'user' => $user,    
             'token' => $token
         ]);
     }
 
     return response()->json(['message' => 'The provided credentials do not match our records.'], 401);
 }
-
-
-
 }
